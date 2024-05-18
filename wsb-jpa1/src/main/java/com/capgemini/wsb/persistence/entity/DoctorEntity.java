@@ -2,14 +2,8 @@ package com.capgemini.wsb.persistence.entity;
 
 import com.capgemini.wsb.persistence.enums.Specialization;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "DOCTOR")
@@ -36,6 +30,17 @@ public class DoctorEntity {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Specialization specialization;
+
+	// relacja jednostronna od strony rodzica
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ADDRESS_ID")
+	private AddressEntity address;
+
+	//	relacja dwustronna
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PATIENT_ID")
+	private Collection<PatientEntity> patients;
+
 
 	public Long getId() {
 		return id;
